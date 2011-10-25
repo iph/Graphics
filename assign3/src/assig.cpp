@@ -1,0 +1,8 @@
+#include "House.h"
+
+
+
+int main(){
+	
+	return 0;
+}

@@ -1,0 +1,15 @@
+#include "Shape.h"
+
+#ifndef __SPHERE_HEADER__
+#define __SPHERE_HEADER__
+
+class Sphere: public Shape{
+	public:
+		Sphere(float r, int rs_i, int vs_i, int render);
+		void makeNorms();
+		void make();
+	private:
+		float radius;
+};
+
+#endif
