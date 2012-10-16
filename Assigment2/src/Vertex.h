@@ -1,0 +1,18 @@
+#include <glut.h>
+#ifndef __VERTEX_HEADER__
+#define __VERTEX_HEADER__
+
+
+
+class Vertex{
+	public:
+		Vertex();
+		Vertex(GLfloat initX, GLfloat initY, GLfloat initZ);
+		GLfloat x;
+		GLfloat y;
+		GLfloat z;
+		GLfloat w(){ return 1;};
+		void remake(GLfloat makeX, GLfloat makeY, GLfloat makeZ);
+		GLfloat * getVertex();
+};
+#endif

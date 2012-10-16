@@ -1,0 +1,56 @@
+#include "House.h"
+GLfloat colors [][3] = {
+  {0.0, 0.0, 0.0},  /* black   */
+  {1.0, 0.0, 0.0},  /* red     */
+  {1.0, 1.0, 0.0},  /* yellow  */
+  {1.0, 0.0, 1.0},  /* magenta */
+  {0.0, 1.0, 0.0},  /* green   */
+  {0.0, 1.0, 1.0},  /* cyan    */
+  {0.0, 0.0, 1.0},  /* blue    */
+  {0.5, 0.5, 0.5},  /* 50%grey */
+  {1.0, 1.0, 1.0}   /* white   */
+};
+/*
+Function Shape--drawQuad
+	Use: Mostly for the predefined shapes that use it, all the dynamic ones use draw() to do what they have to.
+
+*/
+void House::drawQuad(GLfloat vertices[][4], int iv1, int iv2, int iv3, int iv4, int ic) {
+  glBegin(renderMode); 
+  {
+    glColor3fv(colors[ic]);
+    /*note the explicit use of homogeneous coords below: glVertex4f*/
+    glVertex4fv(vertices[iv1]);
+    glVertex4fv(vertices[iv2]);
+    glVertex4fv(vertices[iv3]);
+    glVertex4fv(vertices[iv4]);
+  }
+  glEnd();
+}
+
+//Initializes house arrays.
+GLfloat House::vertices_house[9][4] = {
+  		{0,2,0,1}, 
+  		{-1,1,1,1}, {1,1,1,1}, {1,1,-1,1}, {-1,1,-1,1},
+  		{-1,-1,1,1}, {1,-1,1,1}, {1,-1,-1,1}, {-1,-1,-1,1}
+	};
+
+
+House::House(int renderModeInit){
+	renderMode = renderModeInit;
+}
+void House::draw(){
+	
+}
+
+void House::drawTriangle(GLfloat vertices[][4], int iv1, int iv2, int iv3, int ic) {
+  glBegin(renderMode); 
+  {
+    glColor3fv(colors[ic]);
+    /*note the explicit use of homogeneous coords below: glVertex4f*/
+    glVertex4fv(vertices[iv1]);
+    glVertex4fv(vertices[iv2]);
+    glVertex4fv(vertices[iv3]);
+  }
+  glEnd();
+}

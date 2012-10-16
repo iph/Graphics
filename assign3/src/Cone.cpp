@@ -1,7 +1,9 @@
 #include "Cone.h"
 #include<math.h>
-Cone::Cone(float r, float h, int rs_i, int vs_i, int render){
+Cone::Cone(float r, float h, int rs_i, int vs_i, int render)
+:Shape(rs_i, vs_i, 109203100){
 	center.remake(0,0,0);
+	vertsNorm = 0;
 	normDisplay = 0;
 	radius = r;
 	height = h;

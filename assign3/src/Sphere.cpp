@@ -1,7 +1,8 @@
 #include "Sphere.h"
 #include<stdio.h>
 #include<math.h>
-Sphere::Sphere(float r, int rs_i, int vs_i, int render){
+Sphere::Sphere(float r, int rs_i, int vs_i, int render)
+:Shape(rs_i,vs_i, 1){
 	center.remake(0,0,0);
 	vertsNorm = 0;
 	normDisplay = 0;
@@ -33,6 +34,7 @@ void Sphere::makeNorms(){
 	for(i = 0; i < rs; i++){
 		for(int j = 0; j < vs; j++){
 			vertsNorm[i][j].remake(verts[i][j].x*2.0, verts[i][j].y*2.0, verts[i][j].z*2.0);
+			vertsNorm[i][j].normalize();
 		}
 	}
 }

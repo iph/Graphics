@@ -1,6 +1,7 @@
 #include "Cylinder.h"
 #include<math.h>
-Cylinder::Cylinder(float r, float h, int rs_i, int vs_i, int render){
+Cylinder::Cylinder(float r, float h, int rs_i, int vs_i, int render)
+:Shape(rs_i, vs_i, 156040){
 	center.remake(0,0,0);
 	normDisplay = 0;
 	radius = r;
@@ -32,5 +33,13 @@ void Cylinder::make(){
 	}
 
 }
-
+void Cylinder::makeNorms(){
+	
+	for(int i = 0; i < rs; i++){
+		for(int j = 0; j < vs; j++){
+			vertsNorm[i][j].remake(verts[i][j].x*2, 0, verts[i][j].z*2);
+			vertsNorm[i][j].normalize();
+		}
+	}
+}
 

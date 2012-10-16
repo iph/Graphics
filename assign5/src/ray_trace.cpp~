@@ -1,0 +1,236 @@
+#include "ray_trace.h"
+#include "Vertex.h"
+#include "Vect.h"
+#include "Camera.h"
+#include "Scene.h"
+void initGL(void);
+void displayScene(void);
+void idle(void);
+void resizeWindow(int width, int height);
+float * my_raytrace(int x, int y);
+int ran = 0;
+
+Scene * scene;
+GLuint texId;
+ 
+color_t screen[WINDOW_WIDTH * WINDOW_HEIGHT];
+
+ 
+void plotPixel(color_t *screen, int x, int y, float r, float g, float b, float a)
+{
+	screen[y*WINDOW_WIDTH + x].r = r;
+	screen[y*WINDOW_WIDTH + x].g = g;
+	screen[y*WINDOW_WIDTH + x].b = b;
+	screen[y*WINDOW_WIDTH + x].a = a;
+}
+
+int main(int argc, char **argv)
+{
+	glutInit(&argc, argv);
+	// depth buffer not really needed, but whatever
+	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+	glutInitWindowPosition(100, 100);
+	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+	glutCreateWindow("Ray Tracer");
+
+	initGL();
+ 	scene = new Scene(argv[1]);
+	glutDisplayFunc(displayScene);
+	glutReshapeFunc(resizeWindow);
+	glutIdleFunc(idle);
+
+	glutMainLoop();
+
+	return 0;
+}
+
+void initGL()
+{
+	int i, j;
+
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClearDepth(1.0);
+
+	resizeWindow(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+	// erase texture
+	for (i=0;i<sizeof(screen)/sizeof(color_t);i++)
+	{
+		screen[i].r = 0.0f;
+		screen[i].g = 0.0f;
+		screen[i].b = 0.0f;
+		screen[i].a = 1.0f;
+	}
+
+	// put a red square on the top left
+	for (i=0; i < 32; i++)
+	{
+		for (j=0; j<32;j++)
+		{
+			plotPixel(screen, i, j, 1.0f, 0.0f, 0.0f, 1.0f);
+		}
+	}
+
+	// put a green square on the top right
+	for (i=WINDOW_WIDTH-32-1; i<WINDOW_WIDTH; i++)
+	{
+		for (j=0; j<32;j++)
+		{
+			plotPixel(screen, i, j, 0.0f, 1.0f, 0.0f, 1.0f);
+		}
+	}
+
+	// put a blue square on the bottom left
+	for (i=0; i<32; i++)
+	{
+		for (j=WINDOW_HEIGHT-32-1; j<WINDOW_HEIGHT;j++)
+		{
+			plotPixel(screen, i, j, 0.0f, 0.0f, 1.0f, 1.0f);
+		}
+	}
+
+	// put a white square on the bottom left
+	for (i=WINDOW_WIDTH-32-1; i<WINDOW_WIDTH; i++)
+	{
+		for (j=WINDOW_HEIGHT-32-1; j<WINDOW_HEIGHT;j++)
+		{
+			plotPixel(screen, i, j, 1.0f, 1.0f, 1.0f, 1.0f);
+		}
+	}
+
+	// create texture for drawing
+	glEnable(GL_TEXTURE_2D);
+	glGenTextures(1, &texId);
+	glBindTexture(GL_TEXTURE_2D, texId);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, WINDOW_WIDTH, WINDOW_HEIGHT, 0, GL_RGBA, GL_FLOAT, (void*)screen);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+}
+
+void displayScene()
+{
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, texId);
+
+	// load orthographic projection
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	glOrtho(0, 1, 0, 1, -1, 1);
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+
+	glBegin(GL_QUADS);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3f(0.0f, 0.0f, 0.0f);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(1.0f, 0.0f, 0.0f);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3f(1.0f, 1.0f, 0.0f);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(0.0f, 1.0f, 0.0f);
+	glEnd();
+
+	// restore projection
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+	glPopMatrix();
+
+	glutSwapBuffers();
+}
+
+void idle()
+{
+	float r, g, b, a;
+	if(ran == 1){
+		return;
+	}
+	ran = 1;
+	// This is where your ray-tracing code will go
+
+	// Please note this is set up to change one pixel at a time. When
+	// you do this assignment, updating the framebuffer every pixel
+	// will be a bottleneck. It is best to do several at once, then
+	// update the screen.
+for(int raster_y = 0; raster_y < WINDOW_HEIGHT; raster_y++){
+	for(int raster_x = 0; raster_x < WINDOW_WIDTH; raster_x++){
+		// first, do a ray trace at raster position (x,y). I made the coordinate system the same as in GLUT.
+
+		float * intensity = my_raytrace(raster_x,raster_y);
+		if (intensity != 0)
+		{
+			r =intensity[0];
+			g =intensity[1];
+			b =intensity[2];
+			a = 1.0f;
+		}
+		else
+		{
+			r = 0.0f;
+			g = 0.0f;
+			b = 0.0f;
+			a = 1.0f;
+		}
+		
+		// now we must change the color in our buffer
+		plotPixel(screen, raster_x, raster_y, r, g, b, a);
+
+}
+}
+		// now lets upload the changes to the video card (slow)
+		// Unfortunately, the final parameter of glTexSubImage2D can only be a 1D array
+		// containing the exact pixels you want to transfer (it isn't smart enough to 
+		// select a square, for instance)
+		glBindTexture(GL_TEXTURE_2D, texId);
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, GL_RGBA, GL_FLOAT, (void*)(screen));
+
+
+	// redraw
+	// Note that this function will not be called again until the display
+	// update completes. This limits the number of times this function
+	// is called to you monitor refresh rate. To get around this, you
+	// could calculate several lines and then update, or you can do the
+	// entire thing and update.
+	glutPostRedisplay();
+}
+
+float * my_raytrace(int x, int y)
+{
+
+	double modelViewMatrix[16];
+	double projMatrix[16];
+	int viewport[4];
+	double clickPoint[3];
+
+	// first we need to get the modelview matrix, the projection matrix, and the viewport
+	glGetDoublev(GL_MODELVIEW_MATRIX, modelViewMatrix);
+	glGetDoublev(GL_PROJECTION_MATRIX, projMatrix);
+	glGetIntegerv(GL_VIEWPORT, viewport);
+
+	// gluUnProject with a Z value of 1 will find the point on the far clipping plane
+	// corresponding the the mouse click. This is not the same as the vector
+	// representing the click.
+	gluUnProject(x, (viewport[3]-y), 1.0, modelViewMatrix, projMatrix, viewport, &clickPoint[0], &clickPoint[1], &clickPoint[2]);
+
+	Vertex far(clickPoint[0],clickPoint[1],clickPoint[2]);
+	
+	return scene->intersect(far);
+}
+void resizeWindow(int width, int height)
+{
+
+	if (height == 0) // prevent div/0
+		height = 1;
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(45.0, (double)width/(double)height, 0.1, 4096.0);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+}

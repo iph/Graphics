@@ -26,9 +26,9 @@ int crt_shape, crt_rs, crt_vs;
 double cyl_height=3;
 double cyl_ray=1;
 double sph_ray=3;
-//Shape designs[2] = {House(GL_LINE_LOOP), Cube(GL_LINE_LOOP, 2)};
 Shape *design[6];
 Shape * currentShape;
+int curr;
 bool translate, rotate, scale, orbit;
 /*******************************************************
 FUNCTION: main
@@ -36,30 +36,26 @@ ARGS: argc, argv
 RETURN: 0
 DOES: main function (duh!); starts GL, GLU, GLUT, then loops 
 ********************************************************/
-int main(int argc, char **argv) {
-	Vect axis(0.0, 0.0, -1.0);
-	Vect up(0.0, 1.0, 0.0);
-	Vect * u = Vect::crossProduct(axis,up);
-	Vect * n = Vect::crossProduct(*u, axis);
-	Vertex v(0,0,1);
-	cout << axis << endl;
-	cout << *u << endl;
-	cout << *n << endl;
- 	v.remake((u->x*v.x+u->y*v.y+u->z*v.z), (v.x*axis.x+v.y*axis.y+v.z*axis.z), (v.x*n->x+v.y*n->y+v.z*n->z));
-	cout << "{" << v.x << ", " << v.y << ", " << v.z <<"}" << endl; 
+int main(int argc, char **argv) { 
 	/* General initialization for GLUT and OpenGL
      Must be called first */
   glutInit( &argc, argv ) ;
-  
+	Vect y(0,1,0);
+	Vect v(1,0,0);
+	Vect * u = Vect::crossProduct(v,y);
+	Vect * n = Vect::crossProduct(*u,v);
+	cout << *u << endl;
+	cout << v << endl; 
+	cout << *n << endl;  
   /* we define these setup procedures */
   glut_setup() ;  
   gl_setup() ;
 	design[0] = new House(GL_LINE_LOOP);
 	design[1] = new Cube(GL_LINE_LOOP, 2);
-	design[2] = new Sphere(2, 10, 10, GL_LINE_LOOP);
-	design[3] = new Cone(2,3, 10 , 10, GL_LINE_LOOP);
-	design[4] = new Torus(1,3, 10 , 10, GL_LINE_LOOP);
-	design[5] = new Cylinder(2,3, 10, 10, GL_LINE_LOOP);
+	design[2] = new Sphere(2, 30, 30, GL_LINE_LOOP);
+	design[3] = new Cone(2,3, 30 , 30, GL_LINE_LOOP);
+	design[4] = new Torus(1,3, 30 , 30, GL_LINE_LOOP);
+	design[5] = new Cylinder(2,3, 30, 30, GL_LINE_LOOP);
   my_setup();
 
   /* go into the main event loop */
@@ -233,43 +229,7 @@ void my_keyboard( unsigned char key, int x, int y ) {
 		scale = false;
 		translate = false;
 	};break;
-	case ',':
-	case '<':{
-			if(crt_shape == CUBE || crt_shape == HOUSE){
-					printf("NOPE\n");
-					break;
-			}
-			currentShape->changeRow(currentShape->getRS()-1);
-			glutPostRedisplay(); 		
-	};break;
-	case '_':
-	case '-':{
-			if(crt_shape == CUBE || crt_shape == HOUSE){
-					printf("NOPE\n");
-					break;
-			}
-			currentShape->changeVertical(currentShape->getVS()-1);
-			glutPostRedisplay(); 		
-		};break;
 
-	case '=':
-	case '+':{
-			if(crt_shape == CUBE || crt_shape == HOUSE){
-					printf("NOPE\n");
-					break;
-			}
-			currentShape->changeVertical(currentShape->getVS()+1);
-			glutPostRedisplay(); 		
-		};break;
-	case '.':
-	case '>':{
-			if(crt_shape == CUBE || crt_shape == HOUSE){
-					printf("NOPE\n");
-					break;
-			}
-			currentShape->changeRow(currentShape->getRS()+1);
-			glutPostRedisplay(); 		
-	};break;
   case 'y':{
 		transform(0,-1,0);
 	};
@@ -315,6 +275,24 @@ void my_keyboard( unsigned char key, int x, int y ) {
 		posX -=2;
 		glutPostRedisplay();
 	};break;
+	case 'o':
+	case 'O':{
+		design[0] = new House(GL_LINE_LOOP);
+		design[1] = new Cube(GL_LINE_LOOP, 2);
+		design[2] = new Sphere(2, 30, 30, GL_LINE_LOOP);
+		design[3] = new Cone(2,3, 30 , 30, GL_LINE_LOOP);
+		design[4] = new Torus(1,3, 30 , 30, GL_LINE_LOOP);
+		design[5] = new Cylinder(2,3, 30, 30, GL_LINE_LOOP);
+ 		currentShape = design[curr-1];
+		lookAtX = 0;
+		lookAtY = 0;
+		lookAtZ = 0;
+		posX = 0;
+		posY = 5;
+		posZ = 25;
+  	
+		glutPostRedisplay();
+	}break;
 	case 'V':{
 		lookAtY +=2;
 		posY += 2;
@@ -329,27 +307,33 @@ void my_keyboard( unsigned char key, int x, int y ) {
   case '2': {
     crt_shape = CUBE;
     glutPostRedisplay();
+		curr = 2;
   }; break;
   case '1':
   case '!': {
     crt_shape = HOUSE;
     glutPostRedisplay();
+		curr = 1;
   }; break;
 	case '3':{
 		crt_shape = SPHERE;
 		glutPostRedisplay();
+		curr = 3;
 }; break;
 	case '4':{
 		crt_shape = CONE;
 		glutPostRedisplay();
+		curr = 4;
 }; break;
 	case '5':{
 		crt_shape = TORUS;
 		glutPostRedisplay();
+		curr = 5;
 	}break;
 	case '6':{
 		crt_shape = CYLINDER;
 		glutPostRedisplay();
+		curr = 6;
 	};break;
  case 'q': 
   case 'Q':
@@ -391,7 +375,7 @@ void my_mouse(int button, int state, int mousex, int mousey) {
   case GLUT_RIGHT_BUTTON:
     if ( state == GLUT_DOWN ) {
       currentShape->changeRender(GL_POLYGON);
-			currentShape->changeNormDisplay(1);
+			currentShape->changeNormDisplay((currentShape->getNormDisplay()+1)%2);
       glutPostRedisplay();
     }
     if( state == GLUT_UP ) {

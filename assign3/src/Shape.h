@@ -12,7 +12,7 @@ VS users: include gl/glut.h below instead of glut.h
 OSX users: include glut/glut.h below instead of glut.j
 **********/
 
-
+#include "Face.h"
 #include <stdlib.h>
 #define _USE_MATH_DEFINES //cause vs is dumb :-(
 #include <math.h>
@@ -42,14 +42,17 @@ OSX users: include glut/glut.h below instead of glut.j
 extern GLfloat colors[][3];
 class Shape{
 public:
-	Shape();
+	Shape(){};
+	Shape(int rs, int vs, int colorMode);
 	virtual void draw();
 	virtual void make(){};
 	Vertex **verts;
 	Vertex **vertsNorm;
 	Vertex center;
 	Vertex axis; 
+	Face * faces;
 	void changeNormDisplay(int flag);
+	void makeFaces();
 	void translate(float xpos, float ypos, float zpos);
 	void rotate(float deg, int x, int y, int z);
 	void scale(float xScale, float yScale, float zScale);
@@ -68,6 +71,7 @@ protected:
 	virtual void drawNorms();
 	virtual Vertex chooseAxis();
 	int rs;
+	void colorize(int colorMode, int rs, int vs);
 	int vs;
 	int normDisplay;
 };

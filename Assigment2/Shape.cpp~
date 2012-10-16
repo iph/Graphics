@@ -1,0 +1,12 @@
+#include "Shapes.h"
+
+void Shape::changeVertical(int newVS){}
+void Shape::changeRow(int newRS){}
+
+Shape::Shape(){
+
+}
+
+int main(){
+	return 0;
+}

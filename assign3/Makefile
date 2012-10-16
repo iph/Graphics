@@ -14,7 +14,7 @@ CFLAGS   = -O3 -Wall
 INC      = -I/usr/X11/include  -I/usr/include -I/usr/include/GL -I/usr/lib/include/GL 
 LIB      = -L/usr/lib/X11 -L/usr/lib -lXi -lXmu -lGL -lglut -lGLU  -lm 
 PROGRAM  = Shape
-OBJ      = Vect.o Shape.o Vertex.o House.o Cube.o stitcher.o Sphere.o Cone.o Torus.o Cylinder.o
+OBJ      = Face.o Vect.o Shape.o Vertex.o House.o Cube.o stitcher.o Sphere.o Cone.o Torus.o Cylinder.o
 
 
 $(PROGRAM): $(OBJ) 

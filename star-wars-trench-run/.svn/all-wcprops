@@ -1,0 +1,267 @@
+K 26
+svn:wc:ra_dav:activity-url
+V 14
+/svn/!svn/act/
+K 25
+svn:wc:ra_dav:version-url
+V 22
+/svn/!svn/ver/50/trunk
+END
+Face.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/47/trunk/Face.cpp
+END
+Texture.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/svn/!svn/ver/37/trunk/Texture.cpp
+END
+Player.h
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/50/trunk/Player.h
+END
+textures
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/24/trunk/textures
+END
+Vect.h~
+K 25
+svn:wc:ra_dav:version-url
+V 29
+/svn/!svn/ver/3/trunk/Vect.h~
+END
+Shape.h
+K 25
+svn:wc:ra_dav:version-url
+V 30
+/svn/!svn/ver/47/trunk/Shape.h
+END
+Vect.h
+K 25
+svn:wc:ra_dav:version-url
+V 29
+/svn/!svn/ver/31/trunk/Vect.h
+END
+glmain.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 33
+/svn/!svn/ver/51/trunk/glmain.cpp
+END
+spec2.txt
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/3/trunk/spec2.txt
+END
+Rectangle.h
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/svn/!svn/ver/42/trunk/Rectangle.h
+END
+spec4.txt
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/3/trunk/spec4.txt
+END
+spec6.txt
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/3/trunk/spec6.txt
+END
+Vertex.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 33
+/svn/!svn/ver/31/trunk/Vertex.cpp
+END
+Enemy.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/svn/!svn/ver/49/trunk/Enemy.cpp
+END
+Cube.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/43/trunk/Cube.cpp
+END
+Readme.txt
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/svn/!svn/ver/3/trunk/Readme.txt
+END
+Scene.cpp~
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/svn/!svn/ver/3/trunk/Scene.cpp~
+END
+Sphere.h
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/38/trunk/Sphere.h
+END
+Player.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 33
+/svn/!svn/ver/50/trunk/Player.cpp
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/30/trunk/Makefile
+END
+Camera.h
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/45/trunk/Camera.h
+END
+Scene.h~
+K 25
+svn:wc:ra_dav:version-url
+V 30
+/svn/!svn/ver/3/trunk/Scene.h~
+END
+Shape.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/svn/!svn/ver/46/trunk/Shape.cpp
+END
+Vect.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/15/trunk/Vect.cpp
+END
+Scene.h
+K 25
+svn:wc:ra_dav:version-url
+V 30
+/svn/!svn/ver/46/trunk/Scene.h
+END
+Face.h
+K 25
+svn:wc:ra_dav:version-url
+V 29
+/svn/!svn/ver/26/trunk/Face.h
+END
+Shape.h~
+K 25
+svn:wc:ra_dav:version-url
+V 30
+/svn/!svn/ver/3/trunk/Shape.h~
+END
+Rectangle.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/!svn/ver/42/trunk/Rectangle.cpp
+END
+Texture.h
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/svn/!svn/ver/24/trunk/Texture.h
+END
+glmain.h~
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/5/trunk/glmain.h~
+END
+svn-commit.tmp
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/svn/!svn/ver/29/trunk/svn-commit.tmp
+END
+glmain.h
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/38/trunk/glmain.h
+END
+intersect
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/svn/!svn/ver/47/trunk/intersect
+END
+Vertex.h~
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/3/trunk/Vertex.h~
+END
+Vertex.h
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/33/trunk/Vertex.h
+END
+Enemy.h
+K 25
+svn:wc:ra_dav:version-url
+V 30
+/svn/!svn/ver/46/trunk/Enemy.h
+END
+Cube.h
+K 25
+svn:wc:ra_dav:version-url
+V 29
+/svn/!svn/ver/43/trunk/Cube.h
+END
+Sphere.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 33
+/svn/!svn/ver/37/trunk/Sphere.cpp
+END
+spec.txt
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/17/trunk/spec.txt
+END
+Camera.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 33
+/svn/!svn/ver/47/trunk/Camera.cpp
+END
+Camera.h~
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/3/trunk/Camera.h~
+END
+Face.cpp~
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/3/trunk/Face.cpp~
+END
+Scene.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/svn/!svn/ver/51/trunk/Scene.cpp
+END

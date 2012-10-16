@@ -7,8 +7,6 @@ Function Shape--drawQuad
 
 */
 
-
-
 House::House(int renderModeInit){
 	renderMode = renderModeInit;
 	vs = 9;

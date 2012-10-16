@@ -1,0 +1,30 @@
+/**************************************
+FILE: CS1566 Project 3
+AUTHOR: Sean Myers
+EMAIL: seanmyers0608@gmail.com
+PLATFORM: linux
+HOMEWORK: 3
+**************************************/
+
+linux
+
+
+Basic functionalities that my program is providing: Everything works.
+
+All source files are in src, the make file libraries are based off my GLUT and openGL file locations, so you might have to rechange the libs in the makefile, but otherwise should work perfectly.
+
+
+Known bugs (if any): None known.
+
+Potential Problems: There are no axis because I used the base code of assignment 2, not assignment 3, has the same basic functionality though. 
+
+Class breakdown:
+
+								Shape
+		Inherits from Shape: Torus, House, Cylinder, Sphere, Cone, Cube
+
+Extra credit (describe what you did, if anything): I made the death star for my sphere. 
+
+
+
+Comments:  I didn't put many.

@@ -1,0 +1,53 @@
+/***************************************************
+FILE: stitcher.h
+AUTHOR: gem, loosely based on hwa random skel
+DATE: 01/24/08
+DOES: header file for cs1566 Assignment 2 -- stitcher
+PLATFORM: tested on osx, linux, and vs
+***************************************************/
+
+/**********
+notes:
+VS users: include gl/glut.h below instead of glut.h
+OSX users: include glut/glut.h below instead of glut.j
+**********/
+
+
+#include <stdlib.h>
+#define _USE_MATH_DEFINES //cause vs is dumb :-(
+#include <math.h>
+#include <glut.h>
+#include "Vertex.h"
+#include <vector>
+#ifndef min //In VC++ 2008, Ryan got a warning about min redefinition, so let's not redefine it if something else already did; sigh
+#define min(a,b) ((a) < (b)? a:b)
+#endif
+#ifndef __SHAPES_HEADER__
+#define __SHAPES_HEADER__
+
+
+
+#define FALSE 0 
+#define TRUE  1
+#define MAX_RS 50
+#define MAX_VS 50
+class Vertex;
+
+using namespace std;
+extern GLfloat color[][4];
+class Shape{
+public:
+	Shape();
+	virtual void draw()=0;
+	virtual void make()=0;
+	Vertex verts[MAX_RS][MAX_VS];
+	void changeVertical(int newVS);
+	void changeRow(int newRS);
+	void changeRender(int newMode);
+	int renderMode;
+private:
+	vector< vector<Vertex *> > verts;
+	int rs;
+	int vs;
+};
+#endif

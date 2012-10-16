@@ -1,6 +1,7 @@
 #include "Torus.h"
 #include<math.h>
-Torus::Torus(float r, float r2, int rs_i, int vs_i, int render){
+Torus::Torus(float r, float r2, int rs_i, int vs_i, int render)
+:Shape(rs_i,vs_i, 104240065){
 	center.remake(0,0,0);
 	radius1 = r;
 	radius2 = r2;

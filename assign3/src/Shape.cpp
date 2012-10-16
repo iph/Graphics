@@ -2,7 +2,8 @@
 #include "Vertex.h"
 #include <stdio.h>
 #include <iostream>
-
+#include <stdlib.h>
+#include <time.h>
 using namespace std;
 void Shape::changeVertical(int newVS){
 	if(newVS < 1){
@@ -23,6 +24,17 @@ void Shape::changeVertical(int newVS){
 		verts[i]=new Vertex[vs];
 	}
 	make();
+
+}
+
+void Shape::makeFaces(){	
+	for(int i= 0; i < rs-1; i++){
+		for(int j = 0; j < vs-1; j++){
+			faces[i*(rs-1)+j].remake(verts[(i+1)%rs][j],verts[(i+1)%rs][(j+1)%vs],verts[i][j],verts[i][(j+1)%vs]);
+		}
+	}
+
+
 
 }
 void Shape::changeRow(int newRS){
@@ -59,9 +71,6 @@ void Shape::translate(float xpos, float ypos, float zpos){
 			verts[i][j].x += xpos;
 			verts[i][j].y += ypos;
 			verts[i][j].z += zpos;
-			vertsNorm[i][j].x += xpos;
-			vertsNorm[i][j].z += zpos;
-			vertsNorm[i][j].y += ypos;
 		}
 	}
 	center.x +=xpos;
@@ -175,10 +184,6 @@ void Shape::axisRotate(float deg){
 	}	
 	Vect * u = Vect::unitVector(*(Vect::crossProduct(*v, y)));
 	Vect * n = Vect::unitVector(*(Vect::crossProduct(*u, *v)));
-	//cout<< *ax << endl;
-	//cout << *v << "and length " <<v->length() << endl;
-	//cout << *u << "and length " <<u->length() <<  endl;
-	//cout << *n << "and length " <<n->length() <<  endl;
 	//Align the global axis to the local axis:
 	for(int i = 0; i < rs; i++){
 		for(int j = 0; j < vs; j++){
@@ -231,12 +236,32 @@ void Shape::makeNorms(){
 	//Create average normal///////////////
 	for(int i = 0; i < rs; i++){
 		for(int j = 0; j < vs; j++){
-			vertsNorm[i][j].remake(verts[i][j].x*2, verts[i][j].y*2, verts[i][j].z*2);
-			//vertsNorm[i][j].normalize();
+			Vect up(verts[i][j],verts[(i+1)%rs][j]);
+			Vect side(verts[i][j], verts[i][(j+1)%vs]);
+			Vect *ans = Vect::crossProduct(side,up);
+			vertsNorm[i][j].x += ans->x;
+			vertsNorm[i][j].y += ans->y;
+			vertsNorm[i][j].z += ans->z;	
+
+			vertsNorm[(i+1)%rs][j].x += ans->x;
+			vertsNorm[(i+1)%rs][j].y += ans->y;
+			vertsNorm[(i+1)%rs][j].z += ans->z;
+
+			vertsNorm[i][(j+1)%vs].x += ans->x;
+			vertsNorm[i][(j+1)%vs].y += ans->y;
+			vertsNorm[i][(j+1)%vs].z += ans->z;
+
+			vertsNorm[(i+1)%rs][(j+1)%vs].x += ans->x;
+			vertsNorm[(i+1)%rs][(j+1)%vs].y += ans->y;
+			vertsNorm[(i+1)%rs][(j+1)%vs].z += ans->z;
+		}
+}
+	for(int i = 0; i < rs; i++){
+		for(int j = 0; j < vs; j++){
+			vertsNorm[i][j].normalize();
 		}
 	}
 }
-
 //Helper function
 float Shape::length(Vertex *norm){
 	return sqrt(norm->x*norm->x+ norm->y*norm->y+ norm->z*norm->z);
@@ -248,36 +273,36 @@ void Shape::crossProduct( Vertex *cross, Vertex *p0, Vertex *p1, Vertex *p2){
 	Vertex vSide(p2->x-p0->x, p2->y-p0->y, p2->x-p0->y);
 	cross->remake((vUp.y*vSide.z-vUp.z*vSide.y), (-(vUp.x*vSide.z-vUp.z*vSide.x)), (vUp.x*vSide.y-vUp.y*vSide.x));
 }
+
+
 void Shape::drawNorms(){
 	for(int i = 0; i < rs; i++){
 		for(int j = 0; j < vs; j++){
 				glColor3f((1.0*i)/rs,0,((rs*1.0-1.0*i)/rs));
+				vertsNorm[i][j].normalize();
 				glBegin(GL_LINES);
 						glVertex4f(verts[i][j].x, verts[i][j].y, verts[i][j].z, verts[i][j].w() );
-						glVertex4f(vertsNorm[i][j].x, vertsNorm[i][j].y, vertsNorm[i][j].z, vertsNorm[i][j].w());
+						glVertex4f((verts[i][j].x+vertsNorm[i][j].x), (verts[i][j].y+vertsNorm[i][j].y),(verts[i][j].z+vertsNorm[i][j].z), vertsNorm[i][j].w());
 				glEnd();	
 		}
 	}
 		
 }
+
+//Changes render
 void Shape::changeRender(int newRender){
 	renderMode = newRender;
 }
 
+//Draws
 void Shape::draw(){
 	for(int i= 0; i < rs-1; i++){
 		for(int j = 0; j < vs-1; j++){
-	glColor3f((1.0*i)/rs,0,((rs*1.0-1.0*i)/rs));
-	glBegin(renderMode);
-			glVertex4fv(verts[i][j].getVertex());
-			glVertex4fv(verts[(i+1)%rs][j].getVertex());
-			glVertex4fv(verts[(i+1)%rs][(j+1)%vs].getVertex());
-			glVertex4fv(verts[i][(j+1)%vs].getVertex());
-	glEnd();			
+		makeFaces();
+		faces[i*(rs-1)+j].draw();			
 		}
 	}
 	if(normDisplay ==1){
-//		makeNorms();
 		drawNorms();
 	}
 }
@@ -292,7 +317,54 @@ GLfloat colors [][3] = {
   {0.5, 0.5, 0.5},  /* 50%grey */
   {1.0, 1.0, 1.0}   /* white   */
 };
-Shape::Shape(){
-
+//Makes it so faces are faces
+Shape::Shape(int rs, int vs, int colorMode){
+	faces = new Face[(rs-1)*(vs-1)];
+	colorize(colorMode, rs, vs);
 }
 
+/********************
+Makes it so you can color individual shapes.
+*/
+void Shape::colorize(int colorMode, int rs, int vs){
+
+			float r = 0;
+			float g = 0;
+			float b = 0;
+	for(int i = 0; i < rs -1; i++){
+		for(int j = 0; j < vs-1; j++){
+			int rando = rand() % 50;	
+
+			if(colorMode == 1){
+				r = ((109.0+rando)/255.0);
+				g = r;
+				b = r;
+			}
+			else{
+				int splitter;
+				splitter = colorMode/100000;
+				r = splitter/255.0*i/(rs-1);
+				//splitter = (colorMode/ 1000)%256;
+				g = 1.0*(rs-1-i)/(rs-1);
+				b = (colorMode%256)/255.0*i/(rs-1);
+			}
+			faces[i*(rs-1)+j].changeColor(r, g, b, 1);	
+			if(colorMode == 1 && i > 25){
+				faces[i*(rs-1)+j].changeColor(129.0/255, 129.0/255, 129.0/255, 129.0/255);	
+				if(i > 26){
+					faces[i*(rs-1)+j].changeColor(135.0/255, 135.0/255, 135.0/255.0, 1);	
+				}
+			}
+		}
+	}
+/*
+		if(colorMode == 1){
+			for(int i = rs-1; i >((rs-5)%rs); i--){
+				for(int j = 0; j < vs-1; j++){
+					faces[i*(rs-1)+j].changeColor(.8, .8, .8, 1);	
+				}
+			}
+		}
+	*/
+	
+}
